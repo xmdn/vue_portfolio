@@ -117,6 +117,50 @@ npx wrangler secret put CONTACT_TO       # the inbox that receives the messages
 | `onboarding@resend.dev` *(default)* | Quick test without a domain — **can only deliver to the email you signed up with** |
 | `portfolio@yourdomain.com` | Real use — requires a **verified domain** in Resend |
 
+#### Where secrets actually live
+
+`.dev.vars` is **local-only**: it is git-ignored, never uploaded to Cloudflare,
+and read solely by `wrangler dev`. Production secrets are stored **in your
+Cloudflare account, on the Worker itself**, and injected as `env.*` at runtime.
+
+| | Where it lives | In Git? | Uploaded? | Used by |
+| --- | --- | --- | --- | --- |
+| Local dev | `.dev.vars` | ❌ no | ❌ never | `wrangler dev` |
+| Production | Worker → **Settings → Variables and Secrets** | ❌ no | ✅ stored in your account | the deployed Worker |
+| Plain config | `wrangler.jsonc` → `vars` | ✅ yes | ✅ yes | both (used for `CONTACT_FROM`) |
+
+So `.dev.vars` never needs to reach Cloudflare — you set the *same names* in the
+account. Two ways to do it:
+
+**Dashboard** — Workers & Pages → `vue-portfolio` → **Settings** →
+**Variables and Secrets** → **Edit** → **Add** → Type: **Secret** →
+then click **Deploy**.
+
+**CLI** (run `npx wrangler login` once):
+
+```bash
+npx wrangler secret put RESEND_API_KEY
+npx wrangler secret put CONTACT_TO
+```
+
+Because secrets are Worker-level **configuration, not code**, they **survive
+every future deploy** from Workers Builds — a `git push` never overwrites or
+removes them. You only set them once.
+
+> ⚠️ Workers Builds *build* environment variables (the build's own Settings →
+> Environment variables) are available **only during the build**, not as `env.*`
+> inside the Worker at runtime. Don't put the Resend key there.
+
+`wrangler.jsonc` declares the required secrets, so `wrangler dev` warns you
+locally when one is missing:
+
+```jsonc
+"secrets": { "required": ["RESEND_API_KEY", "CONTACT_TO"] }
+```
+
+> 🔁 For CI/CD you can also ship code + secrets together:
+> `npx wrangler deploy --secrets-file .env.production`
+
 ### 3. Local development
 
 ```bash

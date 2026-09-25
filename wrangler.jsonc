@@ -15,6 +15,14 @@
     "CONTACT_FROM": "onboarding@resend.dev"
   },
 
+  // Secrets that must exist on the deployed Worker.
+  // Declaring them enables validation: `wrangler dev` warns locally when a
+  // secret is missing from .dev.vars, and `wrangler types` can generate env types.
+  // Set them once with:  npx wrangler secret put RESEND_API_KEY
+  "secrets": {
+    "required": ["RESEND_API_KEY", "CONTACT_TO"]
+  },
+
   "assets": {
     // Vite's default build output directory.
     "directory": "./dist",
