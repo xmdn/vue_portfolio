@@ -69,8 +69,17 @@ as **Cloudflare Workers Static Assets** with SPA routing enabled:
 
 `not_found_handling: "single-page-application"` makes unknown paths return
 `index.html` with a `200` status, so Vue Router's history mode works on deep
-links and hard refreshes. `public/_redirects` mirrors the same fallback for
-plain **Cloudflare Pages** projects.
+links and hard refreshes — **without** a `_redirects` file.
+
+> ⚠️ Do **not** add a catch-all `/* /index.html 200` rule to `_redirects`.
+> Cloudflare validates those rules strictly and rejects it with
+> `code: 100324 — Infinite loop detected`, because `/*` also matches
+> `/index.html` itself. `not_found_handling` is the correct, loop-free mechanism
+> since it only applies to paths that match no real static asset.
+>
+> A classic **Cloudflare Pages** project needs no `_redirects` either: Pages
+> enables SPA mode automatically as long as the build output has no top-level
+> `404.html`.
 
 Local one-shot deploy (build + upload):
 

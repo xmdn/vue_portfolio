@@ -1,4 +1,0 @@
-# SPA fallback so Vue Router (history mode) works on deep links and hard refreshes.
-# Cloudflare always matches real static assets (JS/CSS/images) first, so this
-# catch-all only applies when no file matches the requested path.
-/*    /index.html   200
