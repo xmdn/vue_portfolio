@@ -35,6 +35,49 @@ npm run build    # production build into dist/
 npm run preview  # preview the production build
 ```
 
+## ☁️ Deploying to Cloudflare
+
+The repo ships with [`wrangler.jsonc`](wrangler.jsonc), which deploys `dist/`
+as **Cloudflare Workers Static Assets** with SPA routing enabled:
+
+```jsonc
+{
+  "name": "vue-portfolio",
+  "compatibility_date": "2026-09-25",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}
+```
+
+### Cloudflare build settings
+
+| Setting | Value |
+| --- | --- |
+| Build command | `npm run build` |
+| Deploy command | `npx wrangler deploy` |
+| Root directory | `/` |
+
+> ⚠️ **Why the config file matters:** without an explicit Wrangler config,
+> `wrangler deploy` falls back to framework auto-detection and tries to parse
+> `vite.config.js` itself, which fails with `Error parsing file: vite.config.js`.
+> Declaring `assets.directory` explicitly removes the guesswork.
+>
+> Also make sure no *Build output directory* is set in the dashboard — the assets
+> directory comes from `wrangler.jsonc`, and `dist/` is already git-ignored.
+
+`not_found_handling: "single-page-application"` makes unknown paths return
+`index.html` with a `200` status, so Vue Router's history mode works on deep
+links and hard refreshes. `public/_redirects` mirrors the same fallback for
+plain **Cloudflare Pages** projects.
+
+Local one-shot deploy (build + upload):
+
+```bash
+npm run deploy
+```
+
 ## 📝 Customizing content
 
 All copy lives in a single file: [`src/data/portfolio.js`](src/data/portfolio.js).

@@ -1,0 +1,16 @@
+{
+  // Cloudflare Workers Static Assets configuration.
+  // Fixes: "Error parsing file: vite.config.js" during `wrangler deploy` —
+  // an explicit Wrangler config stops Wrangler from trying to auto-detect
+  // the build output by parsing vite.config.js.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "vue-portfolio",
+  "compatibility_date": "2026-09-25",
+  "assets": {
+    // Vite's default build output directory.
+    "directory": "./dist",
+    // SPA routing: unknown paths fall back to index.html with a 200 response,
+    // so Vue Router's history mode works on deep links and refreshes.
+    "not_found_handling": "single-page-application"
+  }
+}
