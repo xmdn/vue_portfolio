@@ -4,7 +4,7 @@ import { reactive, ref } from 'vue'
 
 import MagneticButton from '@/components/ui/MagneticButton.vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
-import { profile } from '@/data/portfolio'
+import { profile, sections } from '@/data/portfolio'
 
 const form = reactive({ name: '', email: '', message: '' })
 const sent = ref(false)
@@ -26,13 +26,16 @@ function submit() {
     <div class="container">
       <div class="contact__panel">
         <div class="contact__intro" v-reveal="{ y: 34 }">
-          <SectionHeading index="05" eyebrow="Contact">
-            Let's build something <span class="gradient-text gradient-text--warm">remarkable</span>
-          </SectionHeading>
+          <SectionHeading
+            :index="sections.contact.index"
+            :eyebrow="sections.contact.eyebrow"
+            :title="sections.contact.title"
+            :accent="sections.contact.accent"
+            :accent-warm="sections.contact.accentWarm"
+          />
 
           <p class="lead contact__lead">
-            Have a project, a role, or just an idea worth exploring? My inbox is always open —
-            I usually reply within a day.
+            {{ sections.contact.lead }}
           </p>
 
           <div class="contact__direct">
@@ -59,34 +62,44 @@ function submit() {
 
         <form class="contact__form" v-reveal="{ delay: 0.1, y: 34 }" @submit.prevent="submit">
           <label class="contact__field">
-            <span>Name</span>
-            <input v-model="form.name" type="text" placeholder="Jane Doe" required />
+            <span>{{ sections.contact.fields.name.label }}</span>
+            <input
+              v-model="form.name"
+              type="text"
+              :placeholder="sections.contact.fields.name.placeholder"
+              required
+            />
           </label>
 
           <label class="contact__field">
-            <span>Email</span>
-            <input v-model="form.email" type="email" placeholder="jane@company.com" required />
+            <span>{{ sections.contact.fields.email.label }}</span>
+            <input
+              v-model="form.email"
+              type="email"
+              :placeholder="sections.contact.fields.email.placeholder"
+              required
+            />
           </label>
 
           <label class="contact__field">
-            <span>Message</span>
+            <span>{{ sections.contact.fields.message.label }}</span>
             <textarea
               v-model="form.message"
               rows="5"
-              placeholder="Tell me about your project..."
+              :placeholder="sections.contact.fields.message.placeholder"
               required
             />
           </label>
 
           <MagneticButton class="contact__submit">
-            Send message
+            {{ sections.contact.submitLabel }}
             <Icon icon="mdi:send" width="18" />
           </MagneticButton>
 
           <Transition name="fade">
             <p v-if="sent" class="contact__sent">
               <Icon icon="mdi:check-circle-outline" width="18" />
-              Thanks! Your message is on its way.
+              {{ sections.contact.successMessage }}
             </p>
           </Transition>
         </form>

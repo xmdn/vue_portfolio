@@ -4,7 +4,7 @@ import { Icon } from '@iconify/vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
 import GlowCard from '@/components/ui/GlowCard.vue'
 import MagneticButton from '@/components/ui/MagneticButton.vue'
-import { profile, services } from '@/data/portfolio'
+import { profile, sections, services } from '@/data/portfolio'
 
 const accents = ['violet', 'cyan', 'magenta', 'violet']
 </script>
@@ -36,27 +36,23 @@ const accents = ['violet', 'cyan', 'magenta', 'violet']
         </div>
 
         <div class="about__content">
-          <SectionHeading index="01" eyebrow="About me">
-            Designing &amp; engineering <span class="gradient-text">interfaces that feel alive</span>
-          </SectionHeading>
+          <SectionHeading
+            :index="sections.about.index"
+            :eyebrow="sections.about.eyebrow"
+            :title="sections.about.title"
+            :accent="sections.about.accent"
+          />
 
           <div v-reveal="{ delay: 0.08 }" class="about__text">
-            <p>
-              I'm a frontend engineer focused on the modern Vue ecosystem. I care about
-              clean architecture, measurable performance and the small details that make
-              a product feel premium.
-            </p>
-            <p>
-              My sweet spot is the intersection of design and engineering — building
-              component systems, wiring up state, and layering motion and 3D so the
-              experience stays smooth even under heavy content.
+            <p v-for="(paragraph, index) in sections.about.paragraphs" :key="index">
+              {{ paragraph }}
             </p>
           </div>
 
           <div v-reveal="{ delay: 0.14 }" class="about__actions">
             <MagneticButton :href="profile.resumeUrl" variant="ghost" target="_blank" rel="noopener">
               <Icon icon="mdi:download-outline" width="18" />
-              Download CV
+              {{ sections.about.ctaLabel }}
             </MagneticButton>
           </div>
 

@@ -3,7 +3,7 @@ import { Icon } from '@iconify/vue'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 import SectionHeading from '@/components/ui/SectionHeading.vue'
-import { skills } from '@/data/portfolio'
+import { sections, skills } from '@/data/portfolio'
 
 const listEl = ref(null)
 const visible = ref(false)
@@ -38,9 +38,13 @@ onBeforeUnmount(() => observer?.disconnect())
 <template>
   <section id="skills" class="section skills">
     <div class="container">
-      <SectionHeading index="02" eyebrow="Toolbox" align="center">
-        Skills &amp; <span class="gradient-text">technologies</span>
-      </SectionHeading>
+      <SectionHeading
+        :index="sections.skills.index"
+        :eyebrow="sections.skills.eyebrow"
+        :title="sections.skills.title"
+        :accent="sections.skills.accent"
+        align="center"
+      />
 
       <ul ref="listEl" class="skills__grid">
         <li

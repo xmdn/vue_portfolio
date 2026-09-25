@@ -6,7 +6,7 @@ import CountUp from '@/components/ui/CountUp.vue'
 import MagneticButton from '@/components/ui/MagneticButton.vue'
 import TypeWriter from '@/components/ui/TypeWriter.vue'
 import { scrollToSection } from '@/composables/useSmoothScroll'
-import { profile } from '@/data/portfolio'
+import { profile, sections } from '@/data/portfolio'
 </script>
 
 <template>
@@ -16,11 +16,11 @@ import { profile } from '@/data/portfolio'
     <div class="hero__inner container">
       <p v-reveal class="hero__badge">
         <span class="hero__pulse" />
-        {{ profile.available ? 'Available for new projects' : 'Currently booked' }}
+        {{ sections.hero.badge }}
       </p>
 
       <h1 v-reveal="{ delay: 0.06 }" class="hero__title">
-        <span class="hero__line">Hi, I'm <span class="gradient-text">{{ profile.name }}</span></span>
+        <span class="hero__line">{{ sections.hero.greeting }} <span class="gradient-text">{{ profile.name }}</span></span>
         <span class="hero__line hero__line--role">
           <TypeWriter :words="profile.roles" />
         </span>
@@ -32,7 +32,7 @@ import { profile } from '@/data/portfolio'
 
       <div v-reveal="{ delay: 0.18 }" class="hero__actions">
         <MagneticButton data-cursor="View" @click="scrollToSection('#work')">
-          Explore my work
+          {{ sections.hero.primaryCta }}
           <Icon icon="mdi:arrow-right" width="18" />
         </MagneticButton>
 
@@ -42,7 +42,7 @@ import { profile } from '@/data/portfolio'
           @click.prevent="scrollToSection('#contact')"
         >
           <Icon icon="mdi:email-outline" width="18" />
-          Get in touch
+          {{ sections.hero.secondaryCta }}
         </MagneticButton>
       </div>
 
@@ -55,7 +55,7 @@ import { profile } from '@/data/portfolio'
     </div>
 
     <button class="hero__scroll" type="button" @click="scrollToSection('#about')">
-      <span>Scroll</span>
+      <span>{{ sections.hero.scrollHint }}</span>
       <Icon icon="mdi:chevron-double-down" width="18" />
     </button>
   </section>

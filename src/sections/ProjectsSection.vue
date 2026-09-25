@@ -3,7 +3,7 @@ import { Icon } from '@iconify/vue'
 import { computed, ref } from 'vue'
 
 import SectionHeading from '@/components/ui/SectionHeading.vue'
-import { projectFilters, projects } from '@/data/portfolio'
+import { projects, sections } from '@/data/portfolio'
 
 const active = ref('All')
 
@@ -18,13 +18,16 @@ const filtered = computed(() =>
   <section id="work" class="section projects">
     <div class="container">
       <div class="projects__top">
-        <SectionHeading index="03" eyebrow="Selected work">
-          Projects I'm <span class="gradient-text">proud of</span>
-        </SectionHeading>
+        <SectionHeading
+          :index="sections.projects.index"
+          :eyebrow="sections.projects.eyebrow"
+          :title="sections.projects.title"
+          :accent="sections.projects.accent"
+        />
 
         <div v-reveal class="projects__filters" role="tablist" aria-label="Filter projects">
           <button
-            v-for="filter in projectFilters"
+            v-for="filter in sections.projects.filters"
             :key="filter"
             class="projects__filter"
             :class="{ 'is-active': active === filter }"

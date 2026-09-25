@@ -1,14 +1,17 @@
 <script setup>
 import SectionHeading from '@/components/ui/SectionHeading.vue'
-import { experience } from '@/data/portfolio'
+import { experience, sections } from '@/data/portfolio'
 </script>
 
 <template>
   <section id="experience" class="section experience">
     <div class="container">
-      <SectionHeading index="04" eyebrow="Journey">
-        Experience &amp; <span class="gradient-text">milestones</span>
-      </SectionHeading>
+      <SectionHeading
+        :index="sections.experience.index"
+        :eyebrow="sections.experience.eyebrow"
+        :title="sections.experience.title"
+        :accent="sections.experience.accent"
+      />
 
       <ol class="timeline">
         <li

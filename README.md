@@ -89,9 +89,28 @@ npm run deploy
 
 ## 📝 Customizing content
 
-All copy lives in a single file: [`src/data/portfolio.js`](src/data/portfolio.js).
-Edit `profile`, `services`, `skills`, `experience`, `projects` and `techMarquee`
-to make the site yours — no component changes required.
+**Everything you see on the page is text in one file:** [`src/data/portfolio.js`](src/data/portfolio.js).
+Open it, edit the strings, and the whole site updates — no component changes required.
+
+| Key | Controls |
+| --- | --- |
+| `profile` | Your name, initials, cycling hero roles, tagline, location, email, CV link, footer note, headline numbers and social links |
+| `sections.nav` | Navigation labels and the header CTA button |
+| `sections.hero` | Greeting, availability badge, hero buttons, scroll hint |
+| `sections.about` | Section heading, "About me" paragraphs, CV button label |
+| `sections.skills` | Section heading |
+| `sections.projects` | Section heading and the project filter tabs |
+| `sections.experience` | Section heading |
+| `sections.contact` | Section heading, intro text, form labels/placeholders, submit button and success message |
+| `services` | The four "what I do" cards in the About section |
+| `skills` | Skill names and their bar levels (0–100) |
+| `experience` | Timeline entries (newest first) |
+| `projects` | Project cards — `category` must match one of `sections.projects.filters` |
+| `techMarquee` | The scrolling ribbon of technologies |
+
+> ℹ️ `src/data/portfolio.js` is the only file you need to touch for wording.
+> Icons use [Iconify](https://iconify.design) names (e.g. `mdi:language-php`).
+
 
 ## 🗂 Structure
 

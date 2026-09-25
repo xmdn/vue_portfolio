@@ -2,17 +2,12 @@
 import { Icon } from '@iconify/vue'
 
 import { scrollToSection } from '@/composables/useSmoothScroll'
-import { profile } from '@/data/portfolio'
+import { profile, sections } from '@/data/portfolio'
 
 const year = new Date().getFullYear()
 
-const navLinks = [
-  { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'work', label: 'Work' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'contact', label: 'Contact' },
-]
+// Reuse the main navigation, minus the Home link.
+const navLinks = sections.nav.links.filter(link => link.id !== 'home')
 </script>
 
 <template>
@@ -53,7 +48,7 @@ const navLinks = [
     </div>
 
     <div class="container footer__bottom">
-      <p>© {{ year }} {{ profile.name }}. Built with Vue 3, Three.js &amp; GSAP.</p>
+      <p>© {{ year }} {{ profile.name }}. {{ profile.footerNote }}</p>
       <button class="footer__top" @click="scrollToSection('#home')">
         Back to top
         <Icon icon="mdi:arrow-up" width="18" />

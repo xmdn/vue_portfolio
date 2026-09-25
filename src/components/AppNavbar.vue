@@ -5,20 +5,14 @@ import { computed, onBeforeUnmount, onMounted, watch } from 'vue'
 
 import MagneticButton from '@/components/ui/MagneticButton.vue'
 import { getLenis, scrollToSection } from '@/composables/useSmoothScroll'
-import { profile } from '@/data/portfolio'
+import { profile, sections } from '@/data/portfolio'
 import { useUiStore } from '@/stores/ui'
 
 const ui = useUiStore()
 const { y } = useWindowScroll()
 
-const links = [
-  { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'work', label: 'Work' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'contact', label: 'Contact' },
-]
+// Nav labels live in src/data/portfolio.js → sections.nav.links
+const links = sections.nav.links
 
 const scrolled = computed(() => y.value > 40)
 
@@ -94,7 +88,7 @@ watch(
           class="nav__cta"
           @click.prevent="go('contact')"
         >
-          Let's talk
+          {{ sections.nav.cta }}
           <Icon icon="mdi:arrow-top-right" width="18" />
         </MagneticButton>
 

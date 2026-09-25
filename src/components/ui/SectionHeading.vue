@@ -2,6 +2,8 @@
 defineProps({
   eyebrow: { type: String, default: '' },
   title: { type: String, default: '' },
+  accent: { type: String, default: '' },
+  accentWarm: { type: Boolean, default: false },
   align: { type: String, default: 'left' },
   index: { type: String, default: '' },
 })
@@ -19,7 +21,14 @@ defineProps({
     </span>
 
     <h2 class="section-heading__title">
-      <slot>{{ title }}</slot>
+      <template v-if="accent">
+        {{ title }}
+        <span :class="accentWarm ? 'gradient-text gradient-text--warm' : 'gradient-text'">{{ accent }}</span>
+      </template>
+      <template v-else>
+        {{ title }}
+      </template>
+      <slot />
     </h2>
 
     <p v-if="$slots.lead" class="section-heading__lead lead">
