@@ -6,6 +6,16 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue()],
+  server: {
+    // Proxies the /api/contact Worker endpoint during `npm run dev`,
+    // so the contact form works locally next to `npm run dev:api`.
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8787',
+        changeOrigin: true,
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

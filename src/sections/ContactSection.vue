@@ -7,17 +7,44 @@ import SectionHeading from '@/components/ui/SectionHeading.vue'
 import { profile, sections } from '@/data/portfolio'
 
 const form = reactive({ name: '', email: '', message: '' })
-const sent = ref(false)
 
-function submit() {
-  // Demo handler — wire this up to your API / form service.
-  sent.value = true
-  form.name = ''
-  form.email = ''
-  form.message = ''
-  setTimeout(() => {
-    sent.value = false
-  }, 5000)
+// idle → sending → success | error
+const status = ref('idle')
+const errorText = ref('')
+
+async function submit() {
+  if (status.value === 'sending')
+    return
+
+  status.value = 'sending'
+  errorText.value = ''
+
+  try {
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...form }),
+    })
+
+    const data = await response.json().catch(() => ({}))
+
+    if (!response.ok || !data.ok)
+      throw new Error(data.error || sections.contact.errorMessage)
+
+    status.value = 'success'
+    form.name = ''
+    form.email = ''
+    form.message = ''
+
+    setTimeout(() => {
+      if (status.value === 'success')
+        status.value = 'idle'
+    }, 6000)
+  }
+  catch (error) {
+    status.value = 'error'
+    errorText.value = error.message || sections.contact.errorMessage
+  }
 }
 </script>
 
@@ -91,15 +118,22 @@ function submit() {
             />
           </label>
 
-          <MagneticButton class="contact__submit">
-            {{ sections.contact.submitLabel }}
-            <Icon icon="mdi:send" width="18" />
+          <MagneticButton class="contact__submit" :disabled="status === 'sending'">
+            {{ status === 'sending' ? sections.contact.sendingLabel : sections.contact.submitLabel }}
+            <Icon :icon="status === 'sending' ? 'mdi:loading' : 'mdi:send'" width="18" />
           </MagneticButton>
 
           <Transition name="fade">
-            <p v-if="sent" class="contact__sent">
+            <p v-if="status === 'success'" class="contact__sent">
               <Icon icon="mdi:check-circle-outline" width="18" />
               {{ sections.contact.successMessage }}
+            </p>
+          </Transition>
+
+          <Transition name="fade">
+            <p v-if="status === 'error'" class="contact__error" role="alert">
+              <Icon icon="mdi:alert-circle-outline" width="18" />
+              {{ errorText }}
             </p>
           </Transition>
         </form>
@@ -231,6 +265,29 @@ function submit() {
   gap: 8px;
   font-size: 0.88rem;
   color: var(--lime);
+}
+
+.contact__error {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: #ff6b7d;
+}
+
+.contact__submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.contact__submit:disabled :deep(.iconify) {
+  animation: contact-spin 0.9s linear infinite;
+}
+
+@keyframes contact-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .fade-enter-active,

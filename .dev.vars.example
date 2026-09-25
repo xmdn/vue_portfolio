@@ -1,0 +1,12 @@
+# Copy this file to `.dev.vars` for local development with `wrangler dev`.
+# `.dev.vars` is git-ignored and must never be committed.
+#
+# In production, set these with:  npx wrangler secret put <NAME>
+# (CONTACT_FROM has a default in wrangler.jsonc → "vars")
+
+RESEND_API_KEY=re_your_api_key_here
+CONTACT_TO=you@example.com
+
+# Optional — defaults to onboarding@resend.dev (test mode).
+# Use a verified domain address for real sending, e.g.:
+# CONTACT_FROM=portfolio@yourdomain.com

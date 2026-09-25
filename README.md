@@ -87,6 +87,53 @@ Local one-shot deploy (build + upload):
 npm run deploy
 ```
 
+## 📮 Contact form (Resend + Worker)
+
+The contact form posts to **`POST /api/contact`**, handled by the Worker in
+[`src/index.js`](src/index.js). The Worker validates the input and relays the
+message to your inbox through the [Resend](https://resend.com) API, so your
+email address and API key never reach the browser.
+
+**Free tier:** Resend gives 3,000 emails / month (100 / day) — plenty for a
+portfolio contact form.
+
+### 1. Create a Resend API key
+
+1. Sign up at [resend.com](https://resend.com) and create an API key.
+2. *(Optional but recommended)* Verify your own domain under **Domains** by
+   adding the DKIM / SPF / DMARC DNS records it gives you to Cloudflare DNS.
+
+### 2. Set the secrets
+
+```bash
+npx wrangler secret put RESEND_API_KEY   # your Resend API key
+npx wrangler secret put CONTACT_TO       # the inbox that receives the messages
+```
+
+`CONTACT_FROM` is a plain variable in `wrangler.jsonc` (`vars`):
+
+| Value | When to use |
+| --- | --- |
+| `onboarding@resend.dev` *(default)* | Quick test without a domain — **can only deliver to the email you signed up with** |
+| `portfolio@yourdomain.com` | Real use — requires a **verified domain** in Resend |
+
+### 3. Local development
+
+```bash
+cp .dev.vars.example .dev.vars   # then fill in your keys
+npm run dev:api                  # Worker on http://localhost:8787
+npm run dev                      # Vite on http://localhost:5173 (proxies /api → 8787)
+```
+
+### 4. Deploy
+
+```bash
+npm run deploy
+```
+
+> ℹ️ Only `/api/*` goes through the Worker (`assets.run_worker_first`); every
+> other request is served directly as a static asset from Cloudflare's edge.
+
 ## 📝 Customizing content
 
 **Everything you see on the page is text in one file:** [`src/data/portfolio.js`](src/data/portfolio.js).

@@ -1,16 +1,30 @@
 {
-  // Cloudflare Workers Static Assets configuration.
-  // Fixes: "Error parsing file: vite.config.js" during `wrangler deploy` —
-  // an explicit Wrangler config stops Wrangler from trying to auto-detect
-  // the build output by parsing vite.config.js.
+  // Cloudflare Workers configuration: static assets (the Vue SPA) + one
+  // dynamic endpoint (POST /api/contact) handled by src/index.js.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "vue-portfolio",
   "compatibility_date": "2026-09-25",
+
+  // Worker entry point. Bundled automatically by `wrangler deploy`.
+  "main": "src/index.js",
+
+  // Non-secret plain-text variables.
+  // For a quick test keep `onboarding@resend.dev`; for real sending, verify
+  // your own domain in Resend and use e.g. "portfolio@yourdomain.com".
+  "vars": {
+    "CONTACT_FROM": "onboarding@resend.dev"
+  },
+
   "assets": {
     // Vite's default build output directory.
     "directory": "./dist",
+    "binding": "ASSETS",
     // SPA routing: unknown paths fall back to index.html with a 200 response,
     // so Vue Router's history mode works on deep links and refreshes.
-    "not_found_handling": "single-page-application"
+    "not_found_handling": "single-page-application",
+    // Only /api/* goes through the Worker; everything else is served as static
+    // assets directly from the edge (fastest possible path).
+    "run_worker_first": ["/api/*"]
   }
 }
+

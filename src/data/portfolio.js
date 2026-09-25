@@ -121,7 +121,9 @@ export const sections = {
       message: { label: 'Message', placeholder: 'Tell me about your project...' },
     },
     submitLabel: 'Send message',
+    sendingLabel: 'Sending...',
     successMessage: 'Thanks! Your message is on its way.',
+    errorMessage: 'Something went wrong. Please try again.',
   },
 }
 

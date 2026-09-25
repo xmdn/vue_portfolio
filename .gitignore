@@ -4,9 +4,11 @@ dist-ssr
 *.local
 .vite
 .wrangler
+.dev.vars
 .DS_Store
 *.log
 npm-debug.log*
 .env
 .env.*
 !.env.example
+!.dev.vars.example
